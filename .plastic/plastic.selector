@@ -1,0 +1,4 @@
+repository "script_testing/script_testing@20067515684046@cloud"
+  path "/"
+    br "/main"
+    co "/main"
