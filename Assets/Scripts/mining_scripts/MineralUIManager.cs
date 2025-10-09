@@ -27,7 +27,7 @@ public class MineralUIManager : MonoBehaviour
     /// </summary>
     public void UpdateMineralCount(int totalCount, int gainedAmount)
     {
-        mineralCountText.text = $"💎 {totalCount}";
+        mineralCountText.text = $"Minerals: {totalCount}";
 
         Color flashColor = normalColor;
         switch (gainedAmount)

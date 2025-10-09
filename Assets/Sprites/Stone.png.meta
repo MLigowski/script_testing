@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0f7163acd09e99e47ad188f2b44a57a5
+guid: 4e8d930686e4af44f8d45cef59593172
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7722018192567790273
-    second: mineral3_0
+      213: 8399011212269539787
+    second: Stone_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mineral3_0
+      name: Stone_0
       rect:
         serializedVersion: 2
-        x: 111
-        y: 95
-        width: 290
-        height: 290
+        x: 32
+        y: 35
+        width: 61
+        height: 61
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ca6b1512ae1a2b60800000000000000
-      internalID: 7722018192567790273
+      spriteID: bc159db92384f8470800000000000000
+      internalID: 8399011212269539787
       vertices: []
       indices: 
       edges: []
@@ -186,8 +186,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      mineral3_0: 7722018192567790273
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
