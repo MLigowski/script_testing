@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerMining : MonoBehaviour
 {
     public static PlayerMining Instance;
 
-    public float miningRange = 1.5f; // zasiêg kopania
-    public KeyCode mineKey = KeyCode.Tab; // klawisz do kopania (mo¿esz zmieniæ na inny)
-    public float miningCooldown = 1.0f; // cooldown miêdzy kolejnymi kopaniami (w sekundach)
+    public float miningRange = 1.5f;
+    public KeyCode mineKey = KeyCode.Tab;
+    public float miningCooldown = 1.0f;
 
     private float lastMineTime = -999f;
     private int mineralsCollected = 0;
@@ -28,15 +28,10 @@ public class PlayerMining : MonoBehaviour
 
     void TryMine()
     {
-        // Rzucamy raycast w kierunku, w którym patrzy postaæ (w prawo lub w lewo)
         Vector2 direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-
-        // Dodajemy debug, ¿eby zobaczyæ raycast w scenie (czerwony kolor na 1 sekundê)
         Debug.DrawRay(transform.position, direction * miningRange, Color.red, 1f);
 
-        // Raycast z filtrem na warstwê Mineral (upewnij siê, ¿e bloki maj¹ tê warstwê)
         int mineralLayerMask = LayerMask.GetMask("Mineral");
-
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, miningRange, mineralLayerMask);
 
         if (hit.collider != null)
@@ -52,7 +47,8 @@ public class PlayerMining : MonoBehaviour
     public void AddMinerals(int amount)
     {
         mineralsCollected += amount;
-        MineralUIManager.Instance.UpdateMineralCount(mineralsCollected);
+
+        // âœ… teraz przekazujemy teÅ¼ "ile" zebrano w tym momencie
+        MineralUIManager.Instance.UpdateMineralCount(mineralsCollected, amount);
     }
 }
-
