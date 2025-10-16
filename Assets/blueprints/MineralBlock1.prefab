@@ -101,3 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mineralValue: 3
+  hitsToBreak: 8
+  worldTextPrefab: {fileID: 4968858324511314352, guid: 623e052cf083b1e4784ab308e2bf196d, type: 3}
+  textOffset: {x: 0, y: 0.6, z: -0.01}
+  textScale: 0.5
+  textDisplayTime: 10

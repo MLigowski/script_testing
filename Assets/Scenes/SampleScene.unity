@@ -2018,7 +2018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   miningRange: 2
   mineKey: 101
-  miningCooldown: 1
+  miningCooldown: 1.3
 --- !u!1 &1850978118
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,12 +2123,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2007127452312760254, guid: 48fbe6f3d08007841ab16ff2497780ad, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.1176
+      objectReference: {fileID: 0}
+    - target: {fileID: 2007127452312760254, guid: 48fbe6f3d08007841ab16ff2497780ad, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.071
+      objectReference: {fileID: 0}
+    - target: {fileID: 2007127452312760254, guid: 48fbe6f3d08007841ab16ff2497780ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.074
+      value: 3.09
       objectReference: {fileID: 0}
     - target: {fileID: 2007127452312760254, guid: 48fbe6f3d08007841ab16ff2497780ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.345
+      value: 1.28
       objectReference: {fileID: 0}
     - target: {fileID: 2007127452312760254, guid: 48fbe6f3d08007841ab16ff2497780ad, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2170,6 +2178,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 6293432458100028081, guid: 48fbe6f3d08007841ab16ff2497780ad, type: 3}
+      propertyPath: worldTextPrefab
+      value: 
+      objectReference: {fileID: 4968858324511314352, guid: 623e052cf083b1e4784ab308e2bf196d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2234,6 +2246,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6331515339655251307, guid: 9ee802b26c2ca4048be14115a3ad6864, type: 3}
+      propertyPath: worldTextPrefab
+      value: 
+      objectReference: {fileID: 4968858324511314352, guid: 623e052cf083b1e4784ab308e2bf196d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2262,6 +2278,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 974276991307371926, guid: 2ccb70df133440243b2f79d86092e9b9, type: 3}
+    - target: {fileID: 4871234831209422266, guid: d382563ad744493439ca16fa3a65afac, type: 3}
+      propertyPath: hitsToBreak
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871234831209422266, guid: d382563ad744493439ca16fa3a65afac, type: 3}
+      propertyPath: worldTextPrefab
+      value: 
+      objectReference: {fileID: 4968858324511314352, guid: 623e052cf083b1e4784ab308e2bf196d, type: 3}
     - target: {fileID: 6538130004569747099, guid: d382563ad744493439ca16fa3a65afac, type: 3}
       propertyPath: m_Name
       value: MineralBlock
