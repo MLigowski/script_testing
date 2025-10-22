@@ -1,47 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private GameObject attackArea = default;
+    [Header("Attack Settings")]
+    public float attackDuration = 0.25f;   // czas dzia³ania hitboxa
+    public int damage = 5;                  // obra¿enia
+    public float range = 1f;                // zasiêg ataku
+    public float attackCooldown = 0.5f;     // cooldown w sekundach (edytowalny w Inspectorze)
 
+    private float attackTimer = 0f;
     private bool attacking = false;
+    private float lastAttackTime = -999f;
 
-    private float timeToAttack = 0.25f;
-    private float timer = 0f;
+    private GameObject attackArea;
 
-    // Start is called before the first frame update
     void Start()
     {
-        attackArea = transform.GetChild(0).gameObject;
+        // Tworzymy dynamicznie AttackArea
+        attackArea = new GameObject("AttackArea");
+        attackArea.transform.parent = transform;
+        attackArea.transform.localPosition = Vector3.zero;
+
+        CircleCollider2D col = attackArea.AddComponent<CircleCollider2D>();
+        col.isTrigger = true;
+        col.radius = range;
+
+        AttackArea attackScript = attackArea.AddComponent<AttackArea>();
+        attackScript.damage = damage;
+        attackScript.range = range;
+
+        attackArea.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        // Atak lewym przyciskiem myszy z cooldownem
+        if (Input.GetMouseButtonDown(0) && Time.time - lastAttackTime >= attackCooldown)
         {
-            Attack();
+            StartAttack();
         }
 
-        if(attacking)
+        // Odliczanie czasu ataku
+        if (attacking)
         {
-            timer += Time.deltaTime;
-
-            if(timer >= timeToAttack)
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackDuration)
             {
-                timer = 0;
+                attackTimer = 0f;
                 attacking = false;
-                attackArea.SetActive(attacking);
+                attackArea.SetActive(false);
             }
-
         }
     }
 
-    private void Attack()
+    private void StartAttack()
     {
         attacking = true;
-        attackArea.SetActive(attacking);
+        lastAttackTime = Time.time;
+
+        // Aktualizacja parametrów attackArea
+        CircleCollider2D col = attackArea.GetComponent<CircleCollider2D>();
+        col.radius = range;
+
+        AttackArea attackScript = attackArea.GetComponent<AttackArea>();
+        attackScript.damage = damage;
+        attackScript.range = range;
+
+        attackArea.SetActive(true);
     }
 }

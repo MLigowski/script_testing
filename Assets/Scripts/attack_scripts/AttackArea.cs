@@ -1,17 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackArea : MonoBehaviour
 {
-    private int damage = 3;
+    [Header("Attack Settings")]
+    public int damage = 3;            // ile HP zabiera atak
+    public float range = 1f;          // zasiêg ataku od œrodka gracza
+
+    private void OnDrawGizmosSelected()
+    {
+        // Podgl¹d zasiêgu w editorze
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.GetComponent<Health>() != null)
+        Health health = collider.GetComponent<Health>();
+        if (health != null)
         {
-            Health health = collider.GetComponent<Health>();
             health.Damage(damage);
         }
+
+        var slime = collider.GetComponent<Slime>();
+        if (slime != null)
+            slime.TakeDamage(damage);
+
+        var zombie = collider.GetComponent<Zombie>();
+        if (zombie != null)
+            zombie.TakeDamage(damage);
     }
 }
