@@ -17,6 +17,7 @@ public class Slime : MonoBehaviour
 
     [Header("Śledzenie gracza")]
     public Transform player;
+    public float chaseRange = 10f; // zasięg śledzenia gracza
 
     [Header("UI")]
     public TextMeshPro healthTextPrefab;
@@ -48,26 +49,40 @@ public class Slime : MonoBehaviour
     {
         if (player == null) return;
 
-        // Skok w stronę gracza co jumpCooldown sekund
+        // Skacze co określony czas
         if (Time.time - lastJumpTime >= jumpCooldown)
         {
-            JumpTowardsPlayer();
+            float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+            if (distanceToPlayer <= chaseRange)
+                JumpTowardsPlayer(); // ściga gracza
+            else
+                RandomJump(); // losowy skok
+
             lastJumpTime = Time.time;
         }
 
         // Aktualizacja tekstu HP
         if (healthTextInstance != null)
-        {
             healthTextInstance.transform.position = transform.position + healthOffset;
-        }
     }
 
     void JumpTowardsPlayer()
     {
+        if (player == null) return;
+
         float dirX = player.position.x - transform.position.x;
-        float dir = dirX > 0 ? 1f : -1f;
+        float dir = Mathf.Sign(dirX); // -1 = lewo, 1 = prawo
 
         rb.linearVelocity = new Vector2(dir * moveSpeed, jumpForce);
+    }
+
+    void RandomJump()
+    {
+        // losowy kierunek: -1 (lewo), 0 (w miejscu), 1 (prawo)
+        float randomDir = Random.Range(-1f, 1f);
+
+        rb.linearVelocity = new Vector2(randomDir * moveSpeed, jumpForce * Random.Range(0.8f, 1.2f));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

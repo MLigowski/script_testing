@@ -50,9 +50,10 @@ public class MineralBlock : MonoBehaviour
         }
     }
 
-    public void BreakBlock()
+    // ?? Teraz przyjmuje argument "damage"
+    public void BreakBlock(int damage)
     {
-        currentHits++;
+        currentHits += damage;
         int remaining = hitsToBreak - currentHits;
 
         // Rozjaœnienie koloru przy uderzeniu

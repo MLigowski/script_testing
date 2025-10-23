@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 483d58a4fbd6f4e4792532caa197f63b
+guid: 2238c8095c760754fa640354e3c24c47
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5252092173937330195
-    second: Slime_green_0
+      213: -2265717527252504817
+    second: Area_attack_indicator_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Slime_green_0
+      name: Area_attack_indicator_2_0
       rect:
         serializedVersion: 2
-        x: 87
-        y: 87
-        width: 130
-        height: 90
+        x: 71
+        y: 55
+        width: 154
+        height: 154
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: de73bdc9ef1dc17b0800000000000000
-      internalID: -5252092173937330195
+      spriteID: f0fecbac9ed8e80e0800000000000000
+      internalID: -2265717527252504817
       vertices: []
       indices: 
       edges: []
@@ -186,8 +186,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Slime_green_0: -5252092173937330195
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

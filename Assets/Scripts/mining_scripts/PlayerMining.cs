@@ -8,6 +8,9 @@ public class PlayerMining : MonoBehaviour
     [Tooltip("Jak daleko gracz może sięgnąć, żeby kopać.")]
     public float miningRange = 1.5f;
 
+    [Tooltip("Ile obrażeń (siły kopania) zadaje jedno uderzenie.")]
+    public int miningPower = 1;
+
     [Tooltip("Klawisz aktywujący kopanie.")]
     public KeyCode mineKey = KeyCode.Tab;
 
@@ -68,8 +71,8 @@ public class PlayerMining : MonoBehaviour
             MineralBlock mineral = hit.collider.GetComponent<MineralBlock>();
             if (mineral != null)
             {
-                Debug.Log("💎 Trafiono minerał!");
-                mineral.BreakBlock();
+                Debug.Log($"💎 Trafiono minerał! (Siła kopania: {miningPower})");
+                mineral.BreakBlock(miningPower);
                 return;
             }
         }
@@ -80,8 +83,8 @@ public class PlayerMining : MonoBehaviour
             StoneBlock stone = hit.collider.GetComponent<StoneBlock>();
             if (stone != null)
             {
-                Debug.Log("🪨 Trafiono kamień!");
-                stone.BreakBlock();
+                Debug.Log($"🪨 Trafiono kamień! (Siła kopania: {miningPower})");
+                stone.BreakBlock(miningPower);
                 return;
             }
         }
