@@ -101,7 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8635dcd52d5b26b44aa2b9b963ed2f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakTime: 0.5
+  stoneValue: 0
+  hitsToBreak: 4
+  worldTextPrefab: {fileID: 0}
+  textOffset: {x: 0, y: 0.6, z: -0.01}
+  textScale: 0.5
+  textDisplayTime: 1.1
 --- !u!61 &4935563427345080156
 BoxCollider2D:
   m_ObjectHideFlags: 0
