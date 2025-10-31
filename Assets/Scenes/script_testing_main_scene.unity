@@ -708,6 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   damage: 20
+  damageInterval: 1
   speed: 2
   jumpForce: 1
   detectionRange: 10
@@ -716,8 +717,8 @@ MonoBehaviour:
     m_Bits: 64
   rayLength: 0.5
   player: {fileID: 1598946925}
-  healthTextPrefab: {fileID: 2574317261031620147, guid: 78fb0c849df769c40b94661d3e5b7042, type: 3}
-  healthOffset: {x: 0, y: 1, z: 0}
+  healthTextPrefab: {fileID: 6651012524984739799, guid: 78fb0c849df769c40b94661d3e5b7042, type: 3}
+  textOffset: {x: 0, y: 1, z: 0}
 --- !u!212 &364713257
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2004,13 +2005,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   damage: 10
-  jumpForce: 3
-  jumpCooldown: 1.2
+  jumpForce: 5
+  jumpCooldown: 1.8
   moveSpeed: 2
+  detectionRange: 8
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 448
   player: {fileID: 1598946925}
-  chaseRange: 10
-  healthTextPrefab: {fileID: 2019119762881009627, guid: d3a85bb0554d2a84fa73933e532db0e4, type: 3}
-  healthOffset: {x: 0, y: 0.8, z: 0}
+  healthTextPrefab: {fileID: 2574317261031620147, guid: 09b3873e442e51840b1612148f1c6afc, type: 3}
+  healthOffset: {x: 0, y: 1.2, z: 0}
 --- !u!61 &1431944860
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2069,7 +2073,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -2555,10 +2559,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  healthTextPrefab: {fileID: 2019119762881009627, guid: d3a85bb0554d2a84fa73933e532db0e4, type: 3}
-  healthTextOffset: {x: 0, y: 1.5, z: 0}
+  currentHealth: 100
+  healAmount: 25
+  healCooldown: 10
+  healthTextPrefab: {fileID: 8916684619547927985, guid: d3a85bb0554d2a84fa73933e532db0e4, type: 3}
+  healthOffset: {x: 0, y: 1, z: 0}
   healCooldownText: {fileID: 1967555418}
-  deathCountText: {fileID: 154583809}
+  deathCounterText: {fileID: 154583809}
+  invincibilityTime: 5
 --- !u!114 &1598946930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2602,7 +2610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 591953783431390719, guid: 5baf0cb9f55293a4382b8f64eb213949, type: 3}
-  invincibilityTime: 5
+  invincibilityTime: 3
 --- !u!4 &1674005462 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 673291261493883006, guid: c66c96129cd1fe74e9f990c14e3410c9, type: 3}

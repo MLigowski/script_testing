@@ -4,116 +4,200 @@ using System.Collections;
 
 public class Health : MonoBehaviour
 {
-    [Header("Statystyki zdrowia")]
+    [Header("Health Settings")]
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
 
-    [Header("UI nad głową (3D TMP)")]
-    public TextMeshPro healthTextPrefab;
-    private TextMeshPro healthTextInstance;
-    public Vector3 healthTextOffset = new Vector3(0, 1.5f, 0);
+    [Header("Healing")]
+    public int healAmount = 25;
+    public float healCooldown = 10f;
+    private bool canHeal = true;
+    private float healCooldownTimer;
 
-    [Header("UI na ekranie (Canvas TMP)")]
-    public TextMeshProUGUI healCooldownText; // TMP w lewym górnym rogu
-    public TextMeshProUGUI deathCountText;   // TMP poniżej cooldownu
+    [Header("UI Prefabs (3D Text)")]
+    public GameObject healthTextPrefab;
+    private GameObject healthTextInstance;
+    private TextMeshPro healthTextTMP;
+    public Vector3 healthOffset = new Vector3(0, 1.2f, 0);
 
+    [Header("UI (Canvas)")]
+    public TextMeshProUGUI healCooldownText;
+    public TextMeshProUGUI deathCounterText;
+
+    [Header("Respawn and Invincibility")]
+    public float invincibilityTime = 5f;
+    private bool isInvincible = false;
     private int deathCount = 0;
-    private PlayerRespawn respawnScript;
+    private Vector3 spawnPoint;
+
+    private SpriteRenderer spriteRenderer;
+    private Coroutine blinkRoutine;
 
     void Start()
     {
         currentHealth = maxHealth;
-        respawnScript = GetComponent<PlayerRespawn>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spawnPoint = transform.position;
 
-        // 🧾 Stwórz tekst nad głową (3D TMP)
+        // Create floating health text (3D TextMeshPro)
         if (healthTextPrefab != null)
         {
-            healthTextInstance = Instantiate(healthTextPrefab, transform.position + healthTextOffset, Quaternion.identity);
-            healthTextInstance.text = $"HP: {currentHealth}/{maxHealth}";
-            healthTextInstance.alignment = TextAlignmentOptions.Center;
-            healthTextInstance.fontSize = 2f;
-
-            var renderer = healthTextInstance.GetComponent<MeshRenderer>();
-            if (renderer != null)
-            {
-                renderer.sortingLayerName = "UI";
-                renderer.sortingOrder = 200;
-            }
+            healthTextInstance = Instantiate(healthTextPrefab, transform.position + healthOffset, Quaternion.identity);
+            healthTextTMP = healthTextInstance.GetComponent<TextMeshPro>();
         }
 
-        // 🖥️ Canvas UI inicjalizacja
-        if (healCooldownText != null)
-            healCooldownText.text = "Heal cooldown: 0s";
-
-        if (deathCountText != null)
-            deathCountText.text = "Deaths: 0";
+        UpdateHealthBar();
+        UpdateDeathCounter();
+        UpdateHealCooldownUI();
     }
 
     void Update()
     {
-        // Aktualizuj pozycję napisu nad głową
+        // Heal (H)
+        if (Input.GetKeyDown(KeyCode.H) && canHeal && currentHealth < maxHealth)
+        {
+            Heal(healAmount);
+            StartCoroutine(HealCooldown());
+        }
+
+        // Cooldown text update
+        if (!canHeal)
+        {
+            healCooldownTimer -= Time.deltaTime;
+            UpdateHealCooldownUI();
+        }
+
+        // Always update floating text position
         if (healthTextInstance != null)
-            healthTextInstance.transform.position = transform.position + healthTextOffset;
+        {
+            healthTextInstance.transform.position = transform.position + healthOffset;
+            healthTextInstance.transform.rotation = Quaternion.identity;
+        }
     }
 
     public void Damage(int amount)
     {
-        if (respawnScript != null && respawnScript.IsInvincible())
-            return;
+        if (isInvincible) return;
 
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Die();
+            StartCoroutine(DieAndRespawn());
         }
 
-        UpdateHealthText();
+        UpdateHealthBar();
     }
 
     public void Heal(int amount)
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        UpdateHealthText();
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        UpdateHealthBar();
     }
 
-    private void Die()
+    private IEnumerator HealCooldown()
+    {
+        canHeal = false;
+        healCooldownTimer = healCooldown;
+
+        while (healCooldownTimer > 0)
+        {
+            UpdateHealCooldownUI();
+            yield return null;
+        }
+
+        canHeal = true;
+        UpdateHealCooldownUI();
+    }
+
+    private IEnumerator DieAndRespawn()
     {
         deathCount++;
+        UpdateDeathCounter();
 
-        // 🔴 Nad głową pokazuje się “You are dead”
-        if (healthTextInstance != null)
+        if (healthTextTMP != null)
         {
-            healthTextInstance.text = "You are dead";
-            healthTextInstance.color = Color.red;
+            healthTextTMP.text = "YOU ARE DEAD";
+            healthTextTMP.fontSize = 15;
+            healthTextTMP.color = Color.red;
         }
 
-        // 🔢 Licznik śmierci w UI
-        if (deathCountText != null)
-            deathCountText.text = $"Deaths: {deathCount}";
+        yield return new WaitForSeconds(2f);
 
-        if (respawnScript != null)
-            respawnScript.RespawnPlayer();
-
-        StartCoroutine(ResetHealthAfterRespawn());
-    }
-
-    private IEnumerator ResetHealthAfterRespawn()
-    {
-        yield return new WaitForSeconds(0.2f);
+        transform.position = spawnPoint;
         currentHealth = maxHealth;
-        UpdateHealthText();
+        UpdateHealthBar();
+
+        StartCoroutine(Invincibility());
     }
 
-    private void UpdateHealthText()
+    private IEnumerator Invincibility()
     {
-        if (healthTextInstance != null)
+        isInvincible = true;
+        float timer = 0f;
+        if (spriteRenderer == null) yield break;
+
+        blinkRoutine = StartCoroutine(BlinkEffect());
+
+        while (timer < invincibilityTime)
         {
-            healthTextInstance.text = $"HP: {currentHealth}/{maxHealth}";
-            healthTextInstance.color = Color.green;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (blinkRoutine != null)
+            StopCoroutine(blinkRoutine);
+
+        spriteRenderer.enabled = true;
+        isInvincible = false;
+    }
+
+    private IEnumerator BlinkEffect()
+    {
+        while (true)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled;
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
-    public int GetCurrentHealth() => currentHealth;
-    public int GetMaxHealth() => maxHealth;
+    private void UpdateHealthBar()
+    {
+        if (healthTextTMP == null) return;
+
+        if (currentHealth <= 0)
+        {
+            healthTextTMP.text = "YOU ARE DEAD";
+            healthTextTMP.fontSize = 15;
+            healthTextTMP.color = Color.red;
+        }
+        else
+        {
+            healthTextTMP.text = $"HP: {currentHealth}/{maxHealth}";
+            healthTextTMP.fontSize = 3;
+
+            if (currentHealth > maxHealth * 0.6f)
+                healthTextTMP.color = Color.green;
+            else if (currentHealth > maxHealth * 0.3f)
+                healthTextTMP.color = Color.yellow;
+            else
+                healthTextTMP.color = Color.red;
+        }
+    }
+
+    private void UpdateHealCooldownUI()
+    {
+        if (healCooldownText == null) return;
+
+        if (canHeal)
+            healCooldownText.text = "<color=green>Heal Ready (H)</color>";
+        else
+            healCooldownText.text = $"<color=red>Heal CD: {healCooldownTimer:F1}s</color>";
+    }
+
+    private void UpdateDeathCounter()
+    {
+        if (deathCounterText != null)
+            deathCounterText.text = $"<color=red>Deaths: {deathCount}</color>";
+    }
 }

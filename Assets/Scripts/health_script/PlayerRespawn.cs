@@ -3,62 +3,65 @@ using System.Collections;
 
 public class PlayerRespawn : MonoBehaviour
 {
-    [Header("Respawn Settings")]
-    public Transform spawnPoint;
-    public float invincibilityTime = 5f;
+    [Header("Ustawienia Respawnu")]
+    [Tooltip("Miejsce, w którym gracz siê odradza po œmierci.")]
+    public Transform spawnPoint; // ?? Teraz publiczne — widoczne w Inspectorze!
 
-    private bool isInvincible = false;
+    [Tooltip("Jak d³ugo po respawnie gracz jest nieœmiertelny (w sekundach).")]
+    public float invincibilityTime = 5f; // ?? Edytowalne w Inspectorze
+
+    private bool invincible = false;
     private SpriteRenderer sr;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
 
+        // Jeœli spawnPoint nie jest przypiêty, spróbuj znaleŸæ pusty obiekt o nazwie "SpawnPoint"
         if (spawnPoint == null)
         {
-            GameObject defaultSpawn = new GameObject("DefaultSpawnPoint");
-            defaultSpawn.transform.position = transform.position;
-            spawnPoint = defaultSpawn.transform;
+            GameObject found = GameObject.Find("SpawnPoint");
+            if (found != null)
+                spawnPoint = found.transform;
         }
     }
 
     public void RespawnPlayer()
     {
-        StartCoroutine(RespawnRoutine());
-    }
+        if (spawnPoint == null)
+        {
+            Debug.LogWarning("?? SpawnPoint nie zosta³ przypiêty do PlayerRespawn!");
+            return;
+        }
 
-    private IEnumerator RespawnRoutine()
-    {
+        // ?? Przenieœ gracza na spawn
         transform.position = spawnPoint.position;
-        isInvincible = true;
 
-        if (sr != null)
-            StartCoroutine(InvincibilityFlash());
-
-        yield return new WaitForSeconds(invincibilityTime);
-
-        isInvincible = false;
-
-        if (sr != null)
-            sr.color = new Color(1, 1, 1, 1);
+        // ?? Uruchom okres nieœmiertelnoœci
+        StartCoroutine(InvincibilityPeriod());
     }
 
-    private IEnumerator InvincibilityFlash()
+    private IEnumerator InvincibilityPeriod()
     {
-        float flashInterval = 0.2f;
-        while (isInvincible)
+        invincible = true;
+
+        float timer = 0f;
+        while (timer < invincibilityTime)
         {
             if (sr != null)
-                sr.color = new Color(1, 1, 1, 0.3f);
-            yield return new WaitForSeconds(flashInterval);
-            if (sr != null)
-                sr.color = new Color(1, 1, 1, 1f);
-            yield return new WaitForSeconds(flashInterval);
+                sr.enabled = !sr.enabled; // mruganie
+            yield return new WaitForSeconds(0.2f);
+            timer += 0.2f;
         }
+
+        if (sr != null)
+            sr.enabled = true;
+
+        invincible = false;
     }
 
     public bool IsInvincible()
     {
-        return isInvincible;
+        return invincible;
     }
 }
