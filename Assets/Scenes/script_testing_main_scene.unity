@@ -256,7 +256,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 217}
+  m_AnchoredPosition: {x: 100, y: 93.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &154583809
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -706,19 +706,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 506f486d48a7ae14084fb6c42bf6743b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 15
-  damage: 20
-  damageInterval: 1
-  speed: 2
-  jumpForce: 1
-  detectionRange: 10
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  rayLength: 0.5
   player: {fileID: 1598946925}
-  healthTextPrefab: {fileID: 6651012524984739799, guid: 78fb0c849df769c40b94661d3e5b7042, type: 3}
-  textOffset: {x: 0, y: 1, z: 0}
+  speed: 2
+  detectionRange: 10
+  damage: 20
+  attackCooldown: 1
+  maxHealth: 15
+  healthTextPrefab: {fileID: 8916684619547927985, guid: d3a85bb0554d2a84fa73933e532db0e4, type: 3}
+  healthOffset: {x: 0, y: 1.2, z: 0}
 --- !u!212 &364713257
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2563,10 +2558,10 @@ MonoBehaviour:
   healAmount: 25
   healCooldown: 10
   healthTextPrefab: {fileID: 8916684619547927985, guid: d3a85bb0554d2a84fa73933e532db0e4, type: 3}
-  healthOffset: {x: 0, y: 1, z: 0}
+  healthOffset: {x: 0, y: 1.2, z: 0}
   healCooldownText: {fileID: 1967555418}
   deathCounterText: {fileID: 154583809}
-  invincibilityTime: 5
+  respawnTextDuration: 2
 --- !u!114 &1598946930
 MonoBehaviour:
   m_ObjectHideFlags: 0

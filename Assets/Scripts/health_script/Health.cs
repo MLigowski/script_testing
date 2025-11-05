@@ -1,53 +1,66 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using TMPro;
-using System.Collections;
 
 public class Health : MonoBehaviour
 {
-    [Header("Stats")]
+    [Header("Health Settings")]
     public int maxHealth = 100;
     public int currentHealth;
 
-    [Header("UI Prefabs")]
-    public GameObject healthTextPrefab;
-    private TextMeshPro healthTextTMP;
-
-    [Header("UI References")]
-    public TextMeshProUGUI healCooldownText;
-    public TextMeshProUGUI deathCounterText;
-
-    [Header("Healing Settings")]
-    public KeyCode healKey = KeyCode.H;
-    public int healAmount = 30;
-    public float healCooldown = 5f;
-    private bool canHeal = true;
+    [Header("Healing")]
+    public int healAmount = 25;
+    public float healCooldown = 10f;
     private float healTimer;
 
-    [Header("Respawn Settings")]
-    public float respawnDelay = 2f;
+    [Header("Floating HP (3D Text Prefab)")]
+    public GameObject healthTextPrefab;
+    private GameObject healthTextObject;
+    private TextMeshPro healthTextTMP;
+    public Vector3 healthOffset = new Vector3(0f, 1.2f, 0f);
 
-    [Header("Invincibility Settings")]
-    public float invincibilityDuration = 5f;
-    private bool isInvincible = false;
-
+    [Header("UI Canvas")]
+    public TextMeshProUGUI healCooldownText;
+    public TextMeshProUGUI deathCounterText;
     private bool isDead = false;
-    public static bool PlayerIsDead = false;
-    private int deathCount = 0;
+
+    [Header("Respawn")]
+    public float respawnTextDuration = 2f;
+    private PlayerRespawn respawnScript;
 
     private SpriteRenderer spriteRenderer;
-    private PlayerRespawn respawnScript;
+    private int deathCount = 0;
+
+    // references for disabling input/attack
+    private Rigidbody2D rb;
+    private PlayerAttack playerAttack;
+    private PlayerMovement playerMovement;
+
+    public static bool PlayerIsDead = false;
+    private Transform mainCam;  // kamera gracza
+    private bool cameraFrozen = false;
+
+
+    void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        playerAttack = GetComponent<PlayerAttack>();
+        playerMovement = GetComponent<PlayerMovement>();
+    }
 
     void Start()
     {
+        healTimer = healCooldown;
+        respawnScript = FindObjectOfType<PlayerRespawn>();
+        if (Camera.main != null)
+            mainCam = Camera.main.transform;
         currentHealth = maxHealth;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        respawnScript = GetComponent<PlayerRespawn>();
 
         if (healthTextPrefab != null)
         {
-            GameObject textObj = Instantiate(healthTextPrefab, transform.position + Vector3.up * 1.2f, Quaternion.identity);
-            textObj.transform.SetParent(transform);
-            healthTextTMP = textObj.GetComponent<TextMeshPro>();
+            healthTextObject = Instantiate(healthTextPrefab, transform.position + healthOffset, Quaternion.identity);
+            healthTextTMP = healthTextObject.GetComponent<TextMeshPro>();
         }
 
         UpdateHealthText();
@@ -57,86 +70,109 @@ public class Health : MonoBehaviour
 
     void Update()
     {
-        if (isDead) return;
-
-        if (Input.GetKeyDown(healKey) && canHeal && currentHealth < maxHealth)
+        healTimer += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.H) && healTimer >= healCooldown)
         {
-            Heal();
+            Heal(healAmount);
+            healTimer = 0f;
+            UpdateHealCooldownUI();
         }
 
-        if (!canHeal)
+        if (healTimer < healCooldown)
+            UpdateHealCooldownUI();
+    }
+
+    void LateUpdate()
+    {
+        if (healthTextObject != null)
         {
-            healTimer -= Time.deltaTime;
-            if (healTimer <= 0)
+            healthTextObject.transform.position = transform.position + healthOffset;
+            healthTextObject.transform.rotation = Quaternion.identity;
+        }
+
+        // --- DODAJ TO NA KOŃCU ---
+        if (mainCam != null)
+        {
+            if (cameraFrozen)
             {
-                canHeal = true;
-                UpdateHealCooldownUI();
+                // Kamera stoi w miejscu, nic nie robi
+                return;
             }
             else
             {
-                UpdateHealCooldownUI();
+                // Kamera śledzi gracza
+                mainCam.position = new Vector3(
+                    transform.position.x,
+                    transform.position.y,
+                    mainCam.position.z
+                );
             }
         }
-
-        if (healthTextTMP != null)
-        {
-            healthTextTMP.transform.rotation = Quaternion.identity;
-        }
     }
+
 
     public void Damage(int amount)
     {
-        if (isDead || isInvincible) return;
+        if (respawnScript != null && respawnScript.IsInvincible())
+            return;
+
+        if (isDead) return;
 
         currentHealth -= amount;
+        currentHealth = Mathf.Max(0, currentHealth);
         UpdateHealthText();
 
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
 
-    public void Heal()
+    public void Heal(int amount)
     {
-        currentHealth = Mathf.Min(maxHealth, currentHealth + healAmount);
-        canHeal = false;
-        healTimer = healCooldown;
+        if (isDead) return;
+
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
         UpdateHealthText();
-        UpdateHealCooldownUI();
     }
 
     private void Die()
     {
         if (isDead) return;
-
         isDead = true;
-        PlayerIsDead = true;
+        PlayerIsDead = true; // ✅ Ustawienie flagi
         deathCount++;
         UpdateDeathCounterUI();
 
         if (healthTextTMP != null)
         {
             healthTextTMP.text = "YOU ARE DEAD";
-            healthTextTMP.fontSize = 15f;
+            healthTextTMP.fontSize = 14f;
             healthTextTMP.color = Color.red;
         }
 
+        // disable player controls + physics
+        DisablePlayerControls();
+
         if (spriteRenderer != null)
             spriteRenderer.enabled = false;
-
-        DisablePlayer();
+        
+        if (mainCam != null)
+        {
+            cameraFrozen = true;  // zapamiętaj że kamera stoi
+        }
 
         StartCoroutine(RespawnRoutine());
     }
 
     private IEnumerator RespawnRoutine()
     {
-        yield return new WaitForSeconds(respawnDelay);
+        yield return new WaitForSeconds(respawnTextDuration);
 
         if (respawnScript != null)
-        {
             respawnScript.RespawnPlayer();
+
+        if (mainCam != null)
+        {
+            cameraFrozen = false;  // kamera znowu śledzi
         }
 
         currentHealth = maxHealth;
@@ -145,91 +181,72 @@ public class Health : MonoBehaviour
         if (spriteRenderer != null)
             spriteRenderer.enabled = true;
 
-        EnablePlayer();
+        EnablePlayerControls();
         isDead = false;
-        PlayerIsDead = false;
-
-        StartCoroutine(InvincibilityFlash());
+        PlayerIsDead = false; // ✅ reset flagi po odrodzeniu
+        UpdateHealCooldownUI();
     }
 
-    private IEnumerator InvincibilityFlash()
+    private void DisablePlayerControls()
     {
-        isInvincible = true;
-        float timer = 0f;
-
-        while (timer < invincibilityDuration)
-        {
-            if (spriteRenderer != null)
-                spriteRenderer.enabled = !spriteRenderer.enabled;
-
-            timer += 0.2f;
-            yield return new WaitForSeconds(0.2f);
-        }
-
-        if (spriteRenderer != null)
-            spriteRenderer.enabled = true;
-
-        isInvincible = false;
-    }
-
-    private void DisablePlayer()
-    {
-        var rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.simulated = false;
+            rb.simulated = false; // stop physics
         }
 
-        var coll = GetComponent<Collider2D>();
-        if (coll != null)
-        {
-            coll.enabled = false;
-        }
+        if (playerAttack != null)
+            playerAttack.enabled = false;
+
+        if (playerMovement != null)
+            playerMovement.enabled = false;
     }
 
-    private void EnablePlayer()
+    private void EnablePlayerControls()
     {
-        var rb = GetComponent<Rigidbody2D>();
         if (rb != null)
-        {
             rb.simulated = true;
-        }
 
-        var coll = GetComponent<Collider2D>();
-        if (coll != null)
-        {
-            coll.enabled = true;
-        }
+        if (playerAttack != null)
+            playerAttack.enabled = true;
+
+        if (playerMovement != null)
+            playerMovement.enabled = true;
     }
 
     private void UpdateHealthText()
     {
         if (healthTextTMP == null) return;
 
-        float ratio = (float)currentHealth / maxHealth;
-        Color color = Color.green;
-        if (ratio < 0.5f && ratio >= 0.25f)
-            color = Color.yellow;
-        else if (ratio < 0.25f)
-            color = Color.red;
+        if (currentHealth <= 0)
+        {
+            healthTextTMP.text = "YOU ARE DEAD";
+            healthTextTMP.color = Color.red;
+            healthTextTMP.fontSize = 14f;
+            return;
+        }
 
-        healthTextTMP.fontSize = 7f;
-        healthTextTMP.color = color;
-        healthTextTMP.text = $"{currentHealth}/{maxHealth} HP";
+        healthTextTMP.fontSize = 3f;
+        healthTextTMP.text = $"HP: {currentHealth}/{maxHealth}";
+
+        float pct = (float)currentHealth / maxHealth;
+        if (pct > 0.66f) healthTextTMP.color = Color.green;
+        else if (pct > 0.33f) healthTextTMP.color = new Color(1f, 0.85f, 0f);
+        else healthTextTMP.color = Color.red;
     }
 
     private void UpdateHealCooldownUI()
     {
         if (healCooldownText == null) return;
 
-        if (canHeal)
+        float remaining = Mathf.Max(0f, healCooldown - healTimer);
+        if (remaining <= 0f)
         {
-            healCooldownText.text = "Heal ready [H]";
+            healCooldownText.text = "<color=green>Heal Ready (H)</color>";
         }
         else
         {
-            healCooldownText.text = $"Heal cooldown: {healTimer:F1}s";
+            healCooldownText.text = $"<color=orange>Heal CD: {remaining:F1}s</color>";
         }
     }
 
@@ -237,5 +254,11 @@ public class Health : MonoBehaviour
     {
         if (deathCounterText == null) return;
         deathCounterText.text = $"Deaths: {deathCount}";
+    }
+
+    private void OnDestroy()
+    {
+        if (healthTextObject != null)
+            Destroy(healthTextObject);
     }
 }

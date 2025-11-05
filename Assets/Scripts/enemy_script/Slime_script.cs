@@ -45,7 +45,7 @@ public class Slime : MonoBehaviour
         if (healthTextPrefab != null)
         {
             healthTextInstance = Instantiate(healthTextPrefab, transform.position + healthOffset, Quaternion.identity);
-            healthTextInstance.text = $"{currentHealth}/{maxHealth}";
+            healthTextInstance.text = $"HP: {currentHealth}/{maxHealth}";
             healthTextInstance.alignment = TextAlignmentOptions.Center;
 
             var renderer = healthTextInstance.GetComponent<MeshRenderer>();
@@ -60,6 +60,13 @@ public class Slime : MonoBehaviour
     void Update()
     {
         if (player == null) return;
+        // ⛔ Nie ruszaj się, jeśli gracz jest martwy
+        if (Health.PlayerIsDead)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            return;
+        }
+
 
         // Sprawdź, czy stoi na ziemi
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, groundLayer);
@@ -135,7 +142,7 @@ public class Slime : MonoBehaviour
     {
         if (healthTextInstance != null)
         {
-            healthTextInstance.text = $"{currentHealth}/{maxHealth}";
+            healthTextInstance.text = $"HP: {currentHealth}/{maxHealth}";
 
             // Kolor HP (zielony → żółty → czerwony)
             float healthPercent = (float)currentHealth / maxHealth;

@@ -19,12 +19,26 @@ public class Zombie : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool isDead = false;
 
+    [Header("Floating HP (3D Text Prefab)")]
+    public GameObject healthTextPrefab;
+    private GameObject healthTextObject;
+    private TMPro.TextMeshPro healthTextTMP;
+    public Vector3 healthOffset = new Vector3(0f, 1.2f, 0f);
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentHealth = maxHealth;
+        if (healthTextPrefab != null)
+        {
+            healthTextObject = Instantiate(healthTextPrefab, transform.position + healthOffset, Quaternion.identity);
+            healthTextTMP = healthTextObject.GetComponent<TMPro.TextMeshPro>();
+            UpdateHealthText();
+        }
+
     }
 
     void Update()
@@ -55,6 +69,13 @@ public class Zombie : MonoBehaviour
         transform.localScale = scale;
 
         attackTimer -= Time.deltaTime;
+
+        if (healthTextObject != null)
+        {
+            healthTextObject.transform.position = transform.position + healthOffset;
+            healthTextObject.transform.rotation = Quaternion.identity;
+        }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -77,6 +98,7 @@ public class Zombie : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= amount;
+        UpdateHealthText();
 
         if (currentHealth <= 0)
         {
@@ -84,12 +106,30 @@ public class Zombie : MonoBehaviour
         }
     }
 
+    private void UpdateHealthText()
+    {
+        if (healthTextTMP == null) return;
+
+        if (isDead)
+        {
+            healthTextTMP.text = "";
+            return;
+        }
+
+        healthTextTMP.text = $"HP: {currentHealth}/{maxHealth}";
+        healthTextTMP.fontSize = 2.5f;
+        healthTextTMP.color = Color.green;
+    }
+
+
     private void Die()
     {
         isDead = true;
         rb.linearVelocity = Vector2.zero;
         GetComponent<Collider2D>().enabled = false;
         spriteRenderer.enabled = false;
+        if (healthTextObject != null)
+           Destroy(healthTextObject);
         Destroy(gameObject, 1.5f);
     }
 }
