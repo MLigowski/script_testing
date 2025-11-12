@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -57,17 +58,56 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         canDash = false;
 
+        Health.IsInvincible = true; // ✅ Nietykalność w czasie dash'a
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
-        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+        // ✅ Pobierz ID warstw (z małej litery!)
+        int playerLayer = LayerMask.NameToLayer("test1");
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
 
+        // ✅ Wyłącz kolizje między graczem a przeciwnikami (jeśli obie warstwy istnieją)
+        if (playerLayer >= 0 && enemyLayer >= 0)
+            Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+
+        // ✅ Efekt migania
+        Coroutine blinkRoutine = StartCoroutine(BlinkEffect(sr));
+
+        // ✅ Ruch dash
+        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
         yield return new WaitForSeconds(dashDuration);
 
+        // ✅ Koniec dash'a
         rb.gravityScale = originalGravity;
         isDashing = false;
+
+        // ✅ Zatrzymaj miganie i przywróć kolor
+        StopCoroutine(blinkRoutine);
+        sr.color = Color.white;
+
+        Health.IsInvincible = false;
+
+        // ✅ Przywróć kolizje po dashu
+        if (playerLayer >= 0 && enemyLayer >= 0)
+            Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
 
         yield return new WaitForSeconds(0.5f);
         canDash = true;
     }
+
+
+    IEnumerator BlinkEffect(SpriteRenderer sr)
+    {
+        while (true)
+        {
+            sr.color = new Color(1, 1, 1, 0.3f); // półprzezroczysty
+            yield return new WaitForSeconds(0.1f);
+            sr.color = new Color(1, 1, 1, 1f); // z powrotem normalny
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
 }
+

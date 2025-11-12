@@ -687,7 +687,7 @@ GameObject:
   - component: {fileID: 364713260}
   - component: {fileID: 364713259}
   - component: {fileID: 364713256}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1979,7 +1979,7 @@ GameObject:
   - component: {fileID: 1431944861}
   - component: {fileID: 1431944860}
   - component: {fileID: 1431944859}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2010,6 +2010,7 @@ MonoBehaviour:
   player: {fileID: 1598946925}
   healthTextPrefab: {fileID: 2574317261031620147, guid: 09b3873e442e51840b1612148f1c6afc, type: 3}
   healthOffset: {x: 0, y: 1.2, z: 0}
+  damageInterval: 1
 --- !u!61 &1431944860
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2334,7 +2335,7 @@ Transform:
   m_GameObject: {fileID: 1524879521}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.88, y: 1.6035451, z: -8.337794}
+  m_LocalPosition: {x: 4.43, y: 1.6035451, z: -8.337794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2352,14 +2353,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1598946925}
   - component: {fileID: 1598946924}
-  - component: {fileID: 1598946923}
   - component: {fileID: 1598946927}
   - component: {fileID: 1598946926}
+  - component: {fileID: 1598946923}
   - component: {fileID: 1598946928}
   - component: {fileID: 1598946929}
   - component: {fileID: 1598946930}
   - component: {fileID: 1598946931}
   - component: {fileID: 1598946932}
+  - component: {fileID: 1598946933}
   m_Layer: 6
   m_Name: Knight
   m_TagString: Player
@@ -2606,6 +2608,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 591953783431390719, guid: 5baf0cb9f55293a4382b8f64eb213949, type: 3}
   invincibilityTime: 3
+--- !u!114 &1598946933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598946922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8fc0d328430898489c891bdd5c57c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathY: -8
 --- !u!4 &1674005462 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 673291261493883006, guid: c66c96129cd1fe74e9f990c14e3410c9, type: 3}

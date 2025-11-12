@@ -31,6 +31,13 @@ public class Slime : MonoBehaviour
     private SpriteRenderer sr;
     private bool facingRight = true;
 
+    [Header("Częstotliwość obrażeń")]
+    public float damageInterval = 1f;  // co ile sekund zadaje dmg
+    private float damageTimer = 0f;
+    private bool playerInRange = false;
+    private Health playerHealth;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -65,6 +72,16 @@ public class Slime : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             return;
+        }
+        // ✅ Jeśli gracz w zasięgu, bij co określony interwał
+        if (playerInRange && playerHealth != null)
+        {
+            damageTimer += Time.deltaTime;
+            if (damageTimer >= damageInterval)
+            {
+                playerHealth.Damage(damage);
+                damageTimer = 0f;
+            }
         }
 
 
@@ -120,14 +137,23 @@ public class Slime : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Zadaje obrażenia co każde zetknięcie z graczem
         if (collision.gameObject.CompareTag("Player"))
         {
-            Health playerHealth = collision.gameObject.GetComponent<Health>();
-            if (playerHealth != null)
-                playerHealth.Damage(damage);
+            playerHealth = collision.gameObject.GetComponent<Health>();
+            playerInRange = true;
+            damageTimer = damageInterval; // zadaje dmg od razu po wejściu w kontakt
         }
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            playerInRange = false;
+            playerHealth = null;
+        }
+    }
+
 
     public void TakeDamage(int amount)
     {

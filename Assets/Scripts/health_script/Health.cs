@@ -39,7 +39,7 @@ public class Health : MonoBehaviour
     public static bool PlayerIsDead = false;
     private Transform mainCam;  // kamera gracza
     private bool cameraFrozen = false;
-
+    public static bool IsInvincible = false;
 
     void Awake()
     {
