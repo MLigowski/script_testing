@@ -464,7 +464,7 @@ Transform:
   m_GameObject: {fileID: 240914258}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00000011921, y: 0.00000011921, z: 0}
+  m_LocalPosition: {x: 0.774, y: 0.00000011921, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba25349300d7ee94a9ddf062d3f59048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
+  damage: 10
   range: 3
   attackDuration: 0.15
   flashDuration: 0.2
@@ -520,8 +520,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.043746963, y: 0}
-  m_Radius: 1
+  m_Offset: {x: -0.381809, y: 0}
+  m_Radius: 0.57444406
 --- !u!120 &240914262
 LineRenderer:
   serializedVersion: 2
@@ -687,34 +687,14 @@ GameObject:
   - component: {fileID: 333595854}
   - component: {fileID: 333595853}
   - component: {fileID: 333595852}
-  - component: {fileID: 333595851}
-  m_Layer: 0
-  m_Name: Square
+  - component: {fileID: 333595857}
+  m_Layer: 9
+  m_Name: Bringer Of Death
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &333595851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 333595850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 506f486d48a7ae14084fb6c42bf6743b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1598946925}
-  speed: 2
-  detectionRange: 8
-  damage: 10
-  attackCooldown: 1
-  maxHealth: 15
-  healthTextPrefab: {fileID: 8916684619547927985, guid: d3a85bb0554d2a84fa73933e532db0e4, type: 3}
-  healthOffset: {x: 0, y: 1.2, z: 0}
 --- !u!95 &333595852
 Animator:
   serializedVersion: 7
@@ -763,7 +743,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &333595854
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -880,6 +860,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &333595857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333595850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d55164312e43a4092f45d6c2c0ecb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 30
+  moveSpeed: 2
+  detectionRange: 6
+  attackRange: 1.5
+  damage: 10
+  attackCooldown: 1
+  player: {fileID: 1598946925}
+  animator: {fileID: 333595852}
+  healthTextPrefab: {fileID: 2019119762881009627, guid: 8ee5cd517c26ff44096d7ab2aa7f0538, type: 3}
+  healthOffset: {x: 0, y: 1.2, z: 0}
 --- !u!1 &364713255
 GameObject:
   m_ObjectHideFlags: 0
@@ -2541,7 +2543,7 @@ Transform:
   m_GameObject: {fileID: 1524879521}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.43, y: 1.6035451, z: -8.337794}
+  m_LocalPosition: {x: -6.63, y: 1.6035451, z: -8.337794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
