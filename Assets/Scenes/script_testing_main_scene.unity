@@ -854,7 +854,7 @@ Transform:
   m_GameObject: {fileID: 333595850}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5938, y: 1.7137, z: 0}
+  m_LocalPosition: {x: 1.11, y: 1.7137, z: 0}
   m_LocalScale: {x: 1.7098169, y: 2.1124797, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -986,7 +986,7 @@ Transform:
   m_GameObject: {fileID: 364713255}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.98, y: 1.84, z: 0}
+  m_LocalPosition: {x: -7.09, y: 1.84, z: 0}
   m_LocalScale: {x: 2.42332, y: 2.4018052, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2543,7 +2543,7 @@ Transform:
   m_GameObject: {fileID: 1524879521}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.63, y: 1.6035451, z: -8.337794}
+  m_LocalPosition: {x: -6.64, y: 1.6035451, z: -8.337794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2765,7 +2765,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
-  healAmount: 25
+  healAmount: 15
   healCooldown: 10
   healthTextPrefab: {fileID: 8916684619547927985, guid: d3a85bb0554d2a84fa73933e532db0e4, type: 3}
   healthOffset: {x: 0, y: 1.2, z: 0}

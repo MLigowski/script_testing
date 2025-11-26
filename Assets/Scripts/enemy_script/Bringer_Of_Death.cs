@@ -55,6 +55,9 @@ public class Bringer_Of_Death : MonoBehaviour
     {
         if (isDead || player == null) return;
 
+        Health ph = player.GetComponent<Health>();
+        if (ph != null && ph.currentHealth <= 0) return;
+
         // aktualizacja pozycji HP
         if (healthTextInstance != null)
             healthTextInstance.transform.position = transform.position + healthOffset;
@@ -123,6 +126,9 @@ public class Bringer_Of_Death : MonoBehaviour
     void ApplyDamageToPlayer()
     {
         if (player == null) return;
+
+        Health ph = player.GetComponent<Health>();
+        if (ph == null || ph.currentHealth <= 0) return;
 
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist <= attackRange + 0.2f)
