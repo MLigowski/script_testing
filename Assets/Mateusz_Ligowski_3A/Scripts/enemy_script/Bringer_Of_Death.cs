@@ -29,6 +29,7 @@ public class Bringer_Of_Death : MonoBehaviour
     private Rigidbody2D rb;
     private bool facingRight = true;
     private bool isDead = false;
+    private Health playerHealth;
 
 
 
@@ -36,6 +37,7 @@ public class Bringer_Of_Death : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        playerHealth = player.GetComponent<Health>();
 
         // Tworzymy HP tekst i dodajemy SLOT w inspectorze
         if (healthTextPrefab != null)
@@ -54,6 +56,15 @@ public class Bringer_Of_Death : MonoBehaviour
     void Update()
     {
         if (isDead || player == null) return;
+
+        if (playerHealth != null && (playerHealth.currentHealth <= 0 || Health.IsInvincible))
+        {
+            animator.SetBool("Attack", false);
+            animator.SetBool("Walk", false);
+            animator.SetBool("Idle", true);
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
 
         Health ph = player.GetComponent<Health>();
         if (ph != null && ph.currentHealth <= 0) return;
@@ -126,28 +137,27 @@ public class Bringer_Of_Death : MonoBehaviour
     void ApplyDamageToPlayer()
     {
         if (player == null) return;
+        if (Health.IsInvincible) return; // ⛔ NIE BIJE PODCZAS DASH
 
         Health ph = player.GetComponent<Health>();
         if (ph == null || ph.currentHealth <= 0) return;
 
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist <= attackRange + 0.2f)
-        {
-            Health h = player.GetComponent<Health>();
-            if (h != null)
-                h.Damage(damage);
-        }
+            ph.Damage(damage);
     }
 
 
-    public void DealDamage()   // ← TO WYWOŁASZ JAKO ANIMATION EVENT
+
+    public void DealDamage()
     {
+        if (Health.IsInvincible) return; // ⛔ blokada dmg przy dash
+        if (playerHealth == null || playerHealth.currentHealth <= 0) return;
+
         if (Vector2.Distance(transform.position, player.position) <= attackRange + 0.1f)
-        {
-            var h = player.GetComponent<Health>();
-            if (h != null) h.Damage(damage);
-        }
+            playerHealth.Damage(damage);
     }
+
 
 
     public void TakeDamage(int dmg)
