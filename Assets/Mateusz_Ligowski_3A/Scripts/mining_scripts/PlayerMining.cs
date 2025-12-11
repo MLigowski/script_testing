@@ -7,7 +7,7 @@ public class PlayerMining : MonoBehaviour
     [Header("Mining Settings")]
     public float miningRange = 1.5f;
     public int miningPower = 1;
-    public KeyCode mineKey = KeyCode.Tab;
+    public string mineAction = "Mine";
     public float miningCooldown = 1.0f;
 
     private float lastMineTime = -999f;
@@ -28,6 +28,8 @@ public class PlayerMining : MonoBehaviour
 
     void Update()
     {
+        KeyCode mineKey = KeybindManager.Instance.DigKey;
+
         if (Input.GetKeyDown(mineKey) && Time.time - lastMineTime >= miningCooldown)
         {
             TryMine();

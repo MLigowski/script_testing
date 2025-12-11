@@ -40,10 +40,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        // Dash
+        if (Input.GetKeyDown(KeybindManager.Instance.DashKey) && canDash)
         {
             StartCoroutine(Dash());
         }
+
     }
 
     void FixedUpdate()

@@ -4412,7 +4412,7 @@ MonoBehaviour:
   moveSpeed: 5
   jumpForce: 5
   jumpCooldown: 1.2
-  dashSpeed: 15
+  dashSpeed: 12
   dashDuration: 0.4
 --- !u!212 &1598946924
 SpriteRenderer:
@@ -4605,7 +4605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   miningRange: 2
-  miningPower: 1
+  miningPower: 2
   mineKey: 101
   miningCooldown: 0.67
 --- !u!114 &1598946931
