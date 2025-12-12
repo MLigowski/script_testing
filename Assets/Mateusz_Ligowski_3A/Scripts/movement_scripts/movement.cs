@@ -19,10 +19,15 @@ public class PlayerMovement : MonoBehaviour
 
     private float horizontalInput;
     private Rigidbody2D rb;
+    public KeyCode dashKey = KeyCode.LeftShift; // domyślny klawisz
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        // 🔥 Bezpieczne pobranie z KeybindManagera
+        if (KeybindManager.Instance != null)
+            dashKey = KeybindManager.Instance.GetKey("Dash");
     }
 
     void Update()
@@ -41,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Dash
         // Dash
-        if (Input.GetKeyDown(KeybindManager.Instance.DashKey) && canDash)
+        if (Input.GetKeyDown(KeybindManager.Instance.GetKey("Dash")) && canDash)
         {
             StartCoroutine(Dash());
         }

@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Mateusz_Ligowski_3A/karsiori/Scenes/Main_Menu.unity
+    path: Assets/Mateusz_Ligowski_3A/Scenes/Main_Menu.unity
     guid: 3051f71caa2373a439382cf8b1c66847
   - enabled: 1
     path: Assets/Mateusz_Ligowski_3A/Scenes/script_testing_main_scene.unity

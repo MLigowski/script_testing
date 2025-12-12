@@ -1,10 +1,14 @@
 using UnityEngine;
-
-public KeyCode defaultDash = KeyCode.LeftShift;
-public KeyCode defaultDig = KeyCode.E;
+using TMPro;
 
 public class SettingsUI : MonoBehaviour
 {
+    public TMP_Text dashText;
+    public TMP_Text digText;
+
+    public KeyCode defaultDash = KeyCode.LeftShift;
+    public KeyCode defaultDig = KeyCode.E;
+
     void Start()
     {
         if (KeybindManager.Instance.DashKey == KeyCode.None)
@@ -14,6 +18,15 @@ public class SettingsUI : MonoBehaviour
             KeybindManager.Instance.DigKey = defaultDig;
 
         UpdateTexts();
+    }
+
+    void UpdateTexts()
+    {
+        if (dashText != null)
+            dashText.text = "Default: " + KeybindManager.Instance.DashKey;
+
+        if (digText != null)
+            digText.text = "Default: " + KeybindManager.Instance.DigKey;
     }
 
     public void RebindDash()

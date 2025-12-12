@@ -28,7 +28,10 @@ public class PlayerMining : MonoBehaviour
 
     void Update()
     {
+        if (KeybindManager.Instance == null) return; // zabezpieczenie przed null
+
         KeyCode mineKey = KeybindManager.Instance.DigKey;
+
 
         if (Input.GetKeyDown(mineKey) && Time.time - lastMineTime >= miningCooldown)
         {

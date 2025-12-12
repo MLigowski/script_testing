@@ -59,4 +59,11 @@ public class KeybindManager : MonoBehaviour
         PlayerPrefs.Save();
         Debug.Log($"{keyName} set to {newKey}");
     }
+    public KeyCode GetKey(string keyName)
+    {
+        if (keyName == "Dash") return DashKey;
+        if (keyName == "Dig") return DigKey;
+
+        return KeyCode.None; // bezpieczny fallback
+    }
 }
