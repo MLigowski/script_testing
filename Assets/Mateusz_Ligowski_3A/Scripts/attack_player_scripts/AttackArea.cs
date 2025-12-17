@@ -24,6 +24,9 @@ public class AttackArea : MonoBehaviour
 
     private bool canDamage = false;
 
+    [Header("Position Offset")]
+    public Vector2 forwardOffset = new Vector2(0.8f, 0f);
+
     void Start()
     {
         // Szukamy gracza
@@ -56,8 +59,13 @@ public class AttackArea : MonoBehaviour
     void Update()
     {
         if (player == null) return;
-        transform.position = player.position; // AttackArea podąża za graczem
+
+        float dir = Mathf.Sign(player.localScale.x); // kierunek patrzenia
+        Vector3 offset = new Vector3(forwardOffset.x * dir, forwardOffset.y, 0f);
+
+        transform.position = player.position + offset;
     }
+
 
     public void PerformAttack()
     {

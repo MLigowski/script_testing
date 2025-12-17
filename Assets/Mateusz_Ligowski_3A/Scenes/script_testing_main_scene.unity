@@ -1403,9 +1403,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  range: 3
+  range: 1.5
   attackDuration: 0.15
   flashDuration: 0.2
+  forwardOffset: {x: 1, y: 0}
 --- !u!58 &240914261
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4471,6 +4472,7 @@ MonoBehaviour:
   jumpCooldown: 1.2
   dashSpeed: 12
   dashDuration: 0.4
+  dashKey: 304
 --- !u!212 &1598946924
 SpriteRenderer:
   m_ObjectHideFlags: 0
