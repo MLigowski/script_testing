@@ -75,7 +75,6 @@ public class MineralBlock : MonoBehaviour
 
     private void ShowHitText(int remaining)
     {
-        // Jeœli nie ma instancji, tworzymy prefab
         if (worldTextInstance == null && worldTextPrefab != null)
         {
             worldTextInstance = Instantiate(worldTextPrefab, transform.position + textOffset, Quaternion.identity);
@@ -89,13 +88,11 @@ public class MineralBlock : MonoBehaviour
             }
         }
 
-        // Aktualizujemy tekst
         if (worldTextInstance != null)
         {
             worldTextInstance.text = remaining > 0 ? remaining.ToString() : "";
             worldTextInstance.gameObject.SetActive(true);
 
-            // Restartujemy timer ukrycia tekstu
             if (hideTextCoroutine != null)
                 StopCoroutine(hideTextCoroutine);
 
@@ -115,7 +112,6 @@ public class MineralBlock : MonoBehaviour
 
     private void CollectMinerals()
     {
-        // Dodaj minera³y do gracza
         if (PlayerMining.Instance != null)
         {
             PlayerMining.Instance.AddMinerals(mineralValue);
