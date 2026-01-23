@@ -4127,7 +4127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1483005682}
-  - component: {fileID: 1483005681}
+  - component: {fileID: 1483005683}
   m_Layer: 0
   m_Name: PauseManager
   m_TagString: Untagged
@@ -4135,18 +4135,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1483005681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483005680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf74e9e00453c974786993ca7d6cb859, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1483005682
 Transform:
   m_ObjectHideFlags: 0
@@ -4162,6 +4150,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1483005683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483005680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf66f9dd2ecad984583ffcf9a3313d06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseUI: {fileID: 0}
 --- !u!1 &1494384657
 GameObject:
   m_ObjectHideFlags: 0
@@ -5567,7 +5568,6 @@ SceneRoots:
   - {fileID: 70788297}
   - {fileID: 619394802}
   - {fileID: 1598946925}
-  - {fileID: 196685383}
   - {fileID: 1524879522}
   - {fileID: 19073951}
   - {fileID: 2021790736}
@@ -5578,3 +5578,4 @@ SceneRoots:
   - {fileID: 333595856}
   - {fileID: 1389296960}
   - {fileID: 1483005682}
+  - {fileID: 196685383}
