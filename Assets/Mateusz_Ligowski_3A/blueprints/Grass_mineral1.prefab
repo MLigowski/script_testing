@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1696952480511109654}
   - component: {fileID: 7825166926508540867}
   - component: {fileID: 4871234831209422266}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass_mineral1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
