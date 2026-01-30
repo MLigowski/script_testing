@@ -466,7 +466,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1055986342}
+      - m_Target: {fileID: 1496737285930524039, guid: 953a36f5fc59b3d4a8aae27240cc95a3, type: 3}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
         m_MethodName: BackToMainMenu
         m_Mode: 1
@@ -516,51 +516,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917595016}
   m_CullTransparentMesh: 1
---- !u!1 &1055986341
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1055986343}
-  - component: {fileID: 1055986342}
-  m_Layer: 0
-  m_Name: pause_buttons
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1055986342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055986341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf66f9dd2ecad984583ffcf9a3313d06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseSceneIndex: 2
---- !u!4 &1055986343
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055986341}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 528.9456, y: 332.10544, z: -6.23946}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1202088342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,9 +1009,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1055986342}
+      - m_Target: {fileID: 1496737285930524039, guid: 953a36f5fc59b3d4a8aae27240cc95a3, type: 3}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: ResumeGame
+        m_MethodName: ResumeFromButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1270,4 +1225,3 @@ SceneRoots:
   m_Roots:
   - {fileID: 5719476671081248976}
   - {fileID: 1974565679}
-  - {fileID: 1055986343}

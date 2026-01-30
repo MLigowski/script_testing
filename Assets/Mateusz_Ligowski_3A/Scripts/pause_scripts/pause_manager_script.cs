@@ -30,6 +30,15 @@ public class PauseManager : MonoBehaviour
     {
         if (!isPaused) return;
 
+        Debug.Log("RESUME FROM ESC");
+        isPaused = false;
+        Time.timeScale = 1f;
+        SceneManager.UnloadSceneAsync(pauseSceneIndex);
+    }
+
+    public void ResumeFromButton()
+    {
+        Debug.Log("Unfreeze button");
         isPaused = false;
         Time.timeScale = 1f;
         SceneManager.UnloadSceneAsync(pauseSceneIndex);
@@ -37,6 +46,7 @@ public class PauseManager : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        Debug.Log("Back to main menu");
         Time.timeScale = 1f;
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
