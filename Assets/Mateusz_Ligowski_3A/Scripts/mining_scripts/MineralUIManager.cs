@@ -13,6 +13,9 @@ public class MineralUIManager : MonoBehaviour
     public Color color1 = new Color(0.3f, 0.7f, 1f);   // Niebieski (dla +1)
     public Color color3 = new Color(0.7f, 0.3f, 1f);   // Fioletowy (dla +3)
     public Color color5 = new Color(0.3f, 1f, 0.5f);   // Zielony (dla +5)
+    public Color color50 = new Color(0.4f, 0.9f, 0.6f);
+    public Color color100 = new Color(0.6f, 0.8f, 0.8f);
+    public Color color25m = new Color(0.1f, 0.3f, 0.2f);
     public Color normalColor = Color.white;            // Normalny kolor tekstu
 
     private Coroutine flashRoutine;
@@ -35,6 +38,9 @@ public class MineralUIManager : MonoBehaviour
             case 1: flashColor = color1; break;
             case 3: flashColor = color3; break;
             case 5: flashColor = color5; break;
+            case 50: flashColor = color50; break;
+            case 100: flashColor = color100; break;
+            case 2500000: flashColor = color25m; break;
         }
 
         if (flashRoutine != null)
