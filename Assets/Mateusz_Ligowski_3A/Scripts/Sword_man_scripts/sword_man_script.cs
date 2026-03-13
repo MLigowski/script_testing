@@ -1,94 +1,80 @@
 using UnityEngine;
 
-public class SwordManAI : MonoBehaviour
+public class SwordManEnemy : MonoBehaviour
 {
+    [Header("References")]
     public Transform player;
+    public Animator animator;      // tu przeci¹gasz animator z body
+    public Rigidbody2D rb;
 
-    public float speed = 3f;
-    public float detectionRange = 8f;
+    [Header("Body Parts (flip)")]
+    public Transform body;
+    public Transform head;
+    public Transform weapon;
+    public Transform leg1;
+    public Transform leg2;
+
+    [Header("Stats")]
+    public float speed = 2f;
+    public float detectRange = 6f;
     public float attackRange = 1.5f;
+    public float attackCooldown = 1f;
+    public int damage = 5;
+    public int health = 20;
 
-    public float attackCooldown = 1.2f;
-    private float attackTimer;
-
-    public int damage = 10;
-
-    public int maxHealth = 50;
-    private int currentHealth;
-
+    [Header("Layers")]
     public LayerMask playerLayer;
 
-    private Rigidbody2D rb;
-    private Animator anim;
-
-    private bool isDead = false;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
-
-        if (anim == null)
-        {
-            Debug.LogError("Animator NOT FOUND");
-        }
-        else
-        {
-            Debug.Log("Animator OK");
-        }
-
-        currentHealth = maxHealth;
-
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-    }
+    float attackTimer;
+    bool isDead;
 
     void Update()
     {
-        if (isDead) return;
-
-        attackTimer -= Time.deltaTime;
+        if (isDead || player == null) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
 
-        if (distance <= detectionRange)
+        if (distance <= detectRange)
         {
-            if (distance > attackRange)
+            ChasePlayer();
+
+            if (distance <= attackRange)
             {
-                ChasePlayer();
-            }
-            else
-            {
-                AttackPlayer();
+                Attack();
             }
         }
         else
         {
-            anim.SetBool("Walk", false);
+            Idle();
         }
     }
 
     void ChasePlayer()
     {
-        anim.SetBool("Walk", true);
-        anim.SetBool("Attack", false);
+        Vector2 dir = (player.position - transform.position).normalized;
 
-        Vector2 direction = (player.position - transform.position).normalized;
+        rb.linearVelocity = new Vector2(dir.x * speed, rb.linearVelocity.y);
 
-        rb.linearVelocity = new Vector2(direction.x * speed, rb.linearVelocity.y);
+        animator.SetBool("Walk", true);
+        animator.SetBool("Attack", false);
+        Debug.Log("Walk TRUE");
 
-        if (direction.x > 0)
-            transform.localScale = new Vector3(-1, 1, 1);
-        else
-            transform.localScale = new Vector3(1, 1, 1);
+        Flip(dir.x);
     }
 
-    void AttackPlayer()
+    void Idle()
     {
         rb.linearVelocity = Vector2.zero;
 
-        anim.SetBool("Walk", false);
-        anim.SetBool("Attack", true);
+        animator.SetBool("Walk", false);
+        animator.SetBool("Attack", false);
+    }
+
+    void Attack()
+    {
+        rb.linearVelocity = Vector2.zero;
+
+        animator.SetBool("Attack", true);
 
         if (attackTimer <= 0)
         {
@@ -101,25 +87,36 @@ public class SwordManAI : MonoBehaviour
                 hit.GetComponent<Health>()?.Damage(damage);
             }
         }
+
+        attackTimer -= Time.deltaTime;
+    }
+
+    void Flip(float dir)
+    {
+        float scale = dir > 0 ? 1 : -1;
+
+        body.localScale = new Vector3(scale, 1, 1);
+        head.localScale = new Vector3(scale, 1, 1);
+        weapon.localScale = new Vector3(scale, 1, 1);
+        leg1.localScale = new Vector3(scale, 1, 1);
+        leg2.localScale = new Vector3(scale, 1, 1);
     }
 
     public void TakeDamage(int dmg)
     {
         if (isDead) return;
 
-        currentHealth -= dmg;
+        health -= dmg;
 
-        if (currentHealth <= 0)
-        {
+        if (health <= 0)
             Die();
-        }
     }
 
     void Die()
     {
         isDead = true;
 
-        anim.SetBool("isDead", true);
+        animator.SetBool("isDead", true);
 
         rb.linearVelocity = Vector2.zero;
 
@@ -129,7 +126,7 @@ public class SwordManAI : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.DrawWireSphere(transform.position, detectRange);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
