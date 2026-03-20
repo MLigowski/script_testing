@@ -4,7 +4,7 @@ public class SwordManEnemy : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
-    public Animator animator;      // tu przeci¹gasz animator z body
+    public Animator animator;     
     public Rigidbody2D rb;
 
     [Header("Body Parts (flip)")]
@@ -47,6 +47,10 @@ public class SwordManEnemy : MonoBehaviour
         {
             Idle();
         }
+    }
+    void LateUpdate()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
     }
 
     void ChasePlayer()
